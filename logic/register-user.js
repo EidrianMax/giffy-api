@@ -4,18 +4,22 @@ import bcrypt from 'bcrypt'
 const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS)
 
 export default async function registerUser ({ username, password }) {
+  const usersCollection = db.collection('users')
+
+  const user = await usersCollection.findOne({ username })
+
+  if (user) throw new Error(`user with username ${username} already exists`)
+
   const hashPassword = await bcrypt.hash(password, saltRounds)
 
-  const user = {
+  const userToSave = {
     username,
     password: hashPassword
   }
 
-  const usersCollection = db.collection('users')
+  const result = await usersCollection.insertOne(userToSave)
 
-  const result = await usersCollection.insertOne(user)
+  const newUser = await usersCollection.findOne({ _id: result.insertedId })
 
-  const newUser = usersCollection.findOne({ _id: result.insertedId })
-
-  return newUser
+  return { id: newUser._id, username: newUser.username }
 }

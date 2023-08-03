@@ -9,9 +9,13 @@ const router = express.Router()
 router.post('/register', async (req, res) => {
   const { username, password } = req.body
 
-  const user = await registerUser({ username, password })
+  try {
+    const user = await registerUser({ username, password })
 
-  res.status(201).json(user)
+    res.status(201).json(user)
+  } catch (error) {
+    res.status(409).json({ error: error.message })
+  }
 })
 
 router.post('/login', async (req, res) => {
