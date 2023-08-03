@@ -4,12 +4,16 @@ import { ObjectId } from 'mongodb'
 
 const { JWT_SECRET } = process.env
 
-export default async function getAllFavs ({ token }) {
+export default async function addFav ({ token, favId }) {
   const usersCollection = db.collection('users')
 
   const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
-  const user = await usersCollection.findOne({ _id: new ObjectId(userId) })
+  const result = await usersCollection.findOneAndUpdate(
+    { _id: new ObjectId(userId) },
+    { $push: { favs: favId } },
+    { returnDocument: 'after' }
+  )
 
-  return user.favs
+  return result.value.favs
 }

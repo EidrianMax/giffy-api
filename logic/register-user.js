@@ -14,7 +14,8 @@ export default async function registerUser ({ username, password }) {
 
   const userToSave = {
     username,
-    password: hashPassword
+    password: hashPassword,
+    favs: []
   }
 
   const result = await usersCollection.insertOne(userToSave)
