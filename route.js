@@ -1,5 +1,5 @@
 import express from 'express'
-import { registerUser, loginUser, getAllFavs, addFav } from './logic/index.js'
+import { registerUser, loginUser, getAllFavs, addFav, deleteFav } from './logic/index.js'
 import jwt from 'jsonwebtoken'
 
 const { JWT_SECRET, JWT_EXPIRES_IN } = process.env
@@ -62,8 +62,19 @@ router.post('/favs/:favId', async (req, res) => {
   }
 })
 
-router.delete('/favs/:id', async (req, res) => {
+router.delete('/favs/:favId', async (req, res) => {
+  const authorization = req.headers.authorization
+  const favId = req.params.favId
 
+  const [, token] = authorization.split(' ')
+
+  try {
+    const favs = await deleteFav({ token, favId })
+
+    res.json(favs)
+  } catch (error) {
+    res.status(401).json({ error: error.message })
+  }
 })
 
 export default router
