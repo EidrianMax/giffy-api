@@ -1,5 +1,5 @@
 import express from 'express'
-import { registerUser, loginUser } from './logic/index.js'
+import { registerUser, loginUser, getAllFavs } from './logic/index.js'
 import jwt from 'jsonwebtoken'
 
 const { JWT_SECRET, JWT_EXPIRES_IN } = process.env
@@ -34,7 +34,17 @@ router.post('/login', async (req, res) => {
 })
 
 router.get('/favs', async (req, res) => {
+  const authorization = req.headers.authorization
 
+  const [, token] = authorization.split(' ')
+
+  try {
+    const favs = await getAllFavs({ token })
+
+    res.json(favs)
+  } catch (error) {
+    res.status(401).json({ error: error.message })
+  }
 })
 
 router.post('/favs/:id', async (req, res) => {
