@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "start": "node .",
     "dev": "nodemon .",
     "lint": "standard",
     "lint:fix": "npm run lint -- --fix"
@@ -28,5 +29,8 @@
     "extends": [
       "standard"
     ]
+  },
+  "engines": {
+    "node": "18.14.0"
   }
 }
