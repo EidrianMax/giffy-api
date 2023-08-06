@@ -1,9 +1,13 @@
 import db from '../mongo-connection.js'
 import bcrypt from 'bcrypt'
+import { validatePassword, validateUsername } from './helpers/validators.js'
 
 const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS)
 
 export default async function registerUser ({ username, password }) {
+  validateUsername(username)
+  validatePassword(password)
+
   const usersCollection = db.collection('users')
 
   const user = await usersCollection.findOne({ username })

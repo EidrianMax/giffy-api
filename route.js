@@ -9,6 +9,8 @@ const router = express.Router()
 router.post('/register', async (req, res) => {
   const { username, password } = req.body
 
+  if (!(username && password)) return res.status(400).json({ message: 'username and password is required' })
+
   try {
     const user = await registerUser({ username, password })
 
