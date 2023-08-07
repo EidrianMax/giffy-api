@@ -5,10 +5,12 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node .",
-    "dev": "nodemon .",
+    "start": "cross-env NODE_ENV=production node .",
+    "dev": "cross-env NODE_ENV=development nodemon .",
     "lint": "standard",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "test": "cross-env NODE_ENV=test vitest",
+    "test:coverage": "npm run test -- --coverage"
   },
   "keywords": [],
   "author": "",
@@ -22,8 +24,10 @@
     "mongodb": "5.7.0"
   },
   "devDependencies": {
+    "cross-env": "7.0.3",
     "nodemon": "3.0.1",
-    "standard": "17.1.0"
+    "standard": "17.1.0",
+    "vitest": "0.34.1"
   },
   "eslintConfig": {
     "extends": [
