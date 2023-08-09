@@ -1,5 +1,7 @@
+import { ObjectId } from 'mongodb'
+
 const USERNAME_MIN_LENGTH = 4
-const USERNAME_MAX_LENGTH = 50
+const USERNAME_MAX_LENGTH = 30
 const PASSWORD_MIN_LENGTH = 6
 const PASSWORD_MAX_LENGTH = 15
 
@@ -17,4 +19,13 @@ export const validateUsername = (username) => {
 export const validatePassword = (password) => {
   validateString(password, 'password')
   if (!(password.length >= PASSWORD_MIN_LENGTH && password.length <= PASSWORD_MAX_LENGTH)) throw new Error(`password must be atleast ${PASSWORD_MIN_LENGTH} chars and under ${PASSWORD_MAX_LENGTH} chars`)
+}
+
+export const validateUserId = (userId) => {
+  validateString(userId, 'userId')
+  if (!ObjectId.isValid(userId)) throw new Error(`${userId} is not a valid mongo id`)
+}
+
+export const validateFavId = (favId) => {
+  validateString(favId, 'favId')
 }
