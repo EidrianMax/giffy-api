@@ -10,7 +10,8 @@
     "lint": "standard",
     "lint:fix": "npm run lint -- --fix",
     "test": "cross-env NODE_ENV=test vitest",
-    "test:coverage": "npm run test -- --coverage"
+    "test:coverage": "npm run test -- --coverage",
+    "test:debug": "npm run test -- --inspect-brk --single-thread"
   },
   "keywords": [],
   "author": "",
@@ -32,7 +33,10 @@
   "eslintConfig": {
     "extends": [
       "standard"
-    ]
+    ],
+    "env": {
+      "jest": true
+    }
   },
   "engines": {
     "node": "18.14.0"
