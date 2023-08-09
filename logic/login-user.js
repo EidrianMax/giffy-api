@@ -1,10 +1,12 @@
-import db from '../mongo-connection.js'
+import { usersCollection } from '../mongo-connection.js'
 import bcrypt from 'bcrypt'
+import { validatePassword, validateUsername } from './helpers/validators.js'
 
 export default async function loginUser ({ username, password }) {
-  const collection = db.collection('users')
+  validateUsername(username)
+  validatePassword(password)
 
-  const user = await collection.findOne({ username })
+  const user = await usersCollection.findOne({ username })
 
   if (!user) throw new Error('invalid credentials')
 
@@ -12,5 +14,5 @@ export default async function loginUser ({ username, password }) {
 
   if (!isPasswordRigth) throw new Error('invalid credentials')
 
-  return user._id
+  return user._id.toString()
 }
