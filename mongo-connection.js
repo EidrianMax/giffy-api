@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb'
 
 const { NODE_ENV, MONGO_DB_URI } = process.env
 
-export const client = new MongoClient(MONGO_DB_URI)
+const client = new MongoClient(MONGO_DB_URI)
 
 let connection
 
@@ -16,4 +16,10 @@ const db = NODE_ENV === 'test'
   ? connection.db('giffy-test')
   : connection.db('giffy')
 
-export default db
+const usersCollection = db.collection('users')
+
+export {
+  client,
+  db,
+  usersCollection
+}
