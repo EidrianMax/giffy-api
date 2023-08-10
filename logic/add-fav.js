@@ -8,7 +8,7 @@ export default async function addFav ({ userId = '', favId = '' }) {
 
   const result = await usersCollection.findOneAndUpdate(
     { _id: new ObjectId(userId) },
-    { $push: { favs: favId } },
+    { $addToSet: { favs: favId } },
     { returnDocument: 'after' }
   )
 

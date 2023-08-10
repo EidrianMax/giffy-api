@@ -93,6 +93,36 @@ describe('addFav', () => {
       })
     })
   })
+
+  describe('when item exist in array', () => {
+    let user, userId
+    const favs = ['1']
+
+    beforeEach(async () => {
+      user = {
+        username: 'pepe',
+        password: '123456',
+        favs
+      }
+
+      const result = await usersCollection.insertOne({
+        ...user,
+        password: bcrypt.hashSync(user.password, Number(BCRYPT_SALT_ROUNDS))
+      })
+
+      const newUser = await usersCollection.findOne({ _id: result.insertedId })
+
+      userId = newUser._id.toJSON()
+    })
+
+    test('should not add a fav if the item exist in array', async () => {
+      const sameFavToAdd = favs[0]
+
+      const newFavs = await addFav({ userId, favId: sameFavToAdd })
+      expect(newFavs).toHaveLength(favs)
+      expect(newFavs).toEqual(favs)
+    })
+  })
 })
 
 afterAll(async () => {
