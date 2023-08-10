@@ -1,13 +1,10 @@
-import db from '../mongo-connection.js'
-import jwt from 'jsonwebtoken'
+import { usersCollection } from '../mongo-connection.js'
 import { ObjectId } from 'mongodb'
+import { validateFavId, validateUserId } from './helpers/validators.js'
 
-const { JWT_SECRET } = process.env
-
-export default async function deleteFav ({ token, favId }) {
-  const usersCollection = db.collection('users')
-
-  const { sub: userId } = jwt.verify(token, JWT_SECRET)
+export default async function deleteFav ({ userId, favId }) {
+  validateUserId(userId)
+  validateFavId(favId)
 
   const result = await usersCollection.findOneAndUpdate(
     { _id: new ObjectId(userId) },
@@ -15,5 +12,9 @@ export default async function deleteFav ({ token, favId }) {
     { returnDocument: 'after' }
   )
 
-  return result.value.favs
+  const userUpdated = result.value
+
+  if (!userUpdated) throw new Error(`user not found with id ${userId}`)
+
+  return userUpdated.favs
 }
