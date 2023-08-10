@@ -50,13 +50,12 @@ router.get('/favs', async (req, res) => {
 })
 
 router.post('/favs/:favId', async (req, res) => {
-  const authorization = req.headers.authorization
   const favId = req.params.favId
-
-  const [, token] = authorization.split(' ')
+  const authorization = req.headers.authorization
 
   try {
-    const favs = await addFav({ token, favId })
+    const userId = userExtractor(authorization)
+    const favs = await addFav({ userId, favId })
 
     res.json(favs)
   } catch (error) {
