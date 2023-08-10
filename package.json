@@ -7,6 +7,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node .",
     "dev": "cross-env NODE_ENV=development nodemon .",
+    "dev:debug": "cross-env NODE_ENV=development nodemon --inspect .",
     "lint": "standard",
     "lint:fix": "npm run lint -- --fix",
     "test": "cross-env NODE_ENV=test vitest",
