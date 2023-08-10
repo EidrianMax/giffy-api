@@ -1,6 +1,7 @@
 import express from 'express'
 import { registerUser, loginUser, getAllFavs, addFav, deleteFav } from './logic/index.js'
 import jwt from 'jsonwebtoken'
+import userExtractor from './logic/helpers/userIdExtractor.js'
 
 const { JWT_SECRET, JWT_EXPIRES_IN } = process.env
 
@@ -38,10 +39,9 @@ router.post('/login', async (req, res) => {
 router.get('/favs', async (req, res) => {
   const authorization = req.headers.authorization
 
-  const [, token] = authorization.split(' ')
-
   try {
-    const favs = await getAllFavs({ token })
+    const userId = userExtractor(authorization)
+    const favs = await getAllFavs({ userId })
 
     res.json(favs)
   } catch (error) {
