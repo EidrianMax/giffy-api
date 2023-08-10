@@ -67,10 +67,9 @@ router.delete('/favs/:favId', async (req, res) => {
   const authorization = req.headers.authorization
   const favId = req.params.favId
 
-  const [, token] = authorization.split(' ')
-
   try {
-    const favs = await deleteFav({ token, favId })
+    const userId = userExtractor(authorization)
+    const favs = await deleteFav({ userId, favId })
 
     res.json(favs)
   } catch (error) {
