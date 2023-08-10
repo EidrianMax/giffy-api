@@ -6,6 +6,14 @@ import deleteFav from './delete-fav.js'
 
 const { BCRYPT_SALT_ROUNDS } = process.env
 
+afterEach(async () => {
+  try {
+    await usersCollection.drop()
+  } catch (error) {
+    // console.log(error)
+  }
+})
+
 describe('deleteFav', () => {
   let user, userId
   const favs = ['1', '2', '3', '4']
